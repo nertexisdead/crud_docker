@@ -59,6 +59,7 @@ GET /api/guests
 
 **Пример ответа:**
 
+```
 [
     {
         "id": 1,
@@ -78,6 +79,7 @@ GET /api/guests
     },
     ...
 ]
+ ```
 
 ### Получение информации о госте по ID
 
@@ -93,6 +95,7 @@ GET api/guests/{id}
 
 **Пример ответа:**
 
+ ```
 {
     "id": 1,
     "first_name": "Имя",
@@ -101,6 +104,7 @@ GET api/guests/{id}
     "phone": "+795262460405",
     "country": "Россия"
 }
+ ```
 
 ### Создание нового гостя
 
@@ -109,7 +113,6 @@ GET api/guests/{id}
 ```http
 POST /api/guests/save
 Content-Type: application/json
-
 {
     "first_name": "Новое имя",
     "last_name": "Новая фамилия",
@@ -117,6 +120,7 @@ Content-Type: application/json
     "phone": "+791234567890",
     "country": "Россия"
 }
+ ```
 
 **Описание:**
 
@@ -124,6 +128,7 @@ Content-Type: application/json
 
 **Пример ответа:**
 
+ ```
 {
     "id": 3,
     "first_name": "Новое имя",
@@ -132,6 +137,7 @@ Content-Type: application/json
     "phone": "+791234567890",
     "country": "Россия"
 }
+ ```
 
 ### Обновление информации о госте
 
@@ -145,6 +151,7 @@ Content-Type: application/json
     "first_name": "Измененное имя",
     "email": "updated@example.com"
 }
+ ```
 
 **Описание:**
 
@@ -152,6 +159,7 @@ Content-Type: application/json
 
 **Пример ответа:**
 
+ ```
 {
     "id": 1,
     "first_name": "Измененное имя",
@@ -160,6 +168,7 @@ Content-Type: application/json
     "phone": "+795262460405",
     "country": "Россия"
 }
+ ```
 
 ### Удаление гостя
 
@@ -167,13 +176,15 @@ Content-Type: application/json
 
 ```http
 DELETE /api/guests/delete/{id}
+ ```
 
 **Описание:**
 
 Удаляет гостя по его уникальному идентификатору.
 
 **Пример ответа:**
-
+ ```
 {
     "message": "Guest was deleted successfully"
 }
+ ```
