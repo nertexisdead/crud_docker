@@ -1,66 +1,177 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Guest Management Microservice
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Описание проекта
 
-## About Laravel
+Это микросервис для управления гостями, разработанный с использованием Laravel и запускаемый в Docker. Микросервис предоставляет API для создания, редактирования, обновления и удаления записей гостей.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Требования
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Docker
+- Docker Compose
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Инструкция по запуску
 
-## Learning Laravel
+1. Клонируйте репозиторий на свой локальный компьютер:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+    ```sh
+    git clone https://github.com/nertexisdead/crud_docker.git
+    cd имя-репозитория
+    ```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+2. Создайте файл `.env` в корневой директории проекта и скопируйте в него содержимое из `.env.example`. Обновите переменные окружения, если это необходимо:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    ```dotenv
+    DB_CONNECTION=mysql
+    DB_HOST=db
+    DB_PORT=3306
+    DB_DATABASE=apiClients
+    DB_USERNAME=root
+    DB_PASSWORD=secret
+    ```
 
-## Laravel Sponsors
+3. Запустите контейнеры Docker:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+    ```sh
+    docker-compose up -d
+    ```
 
-### Premium Partners
+4. Выполните миграции базы данных:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+    ```sh
+    docker-compose exec app php artisan migrate
+    ```
 
-## Contributing
+5. Приложение будет доступно по адресу [http://localhost:8000]
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## API Документация
 
-## Code of Conduct
+### Получение списка гостей
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**Запрос:**
 
-## Security Vulnerabilities
+```http
+GET /api/guests
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**Описание:**
 
-## License
+Возвращает список всех гостей.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**Пример ответа:**
+
+[
+    {
+        "id": 1,
+        "first_name": "Имя",
+        "last_name": "Фамилия",
+        "email": "example@example.com",
+        "phone": "+795262460405",
+        "country": "Россия"
+    },
+    {
+        "id": 2,
+        "first_name": "Другое имя",
+        "last_name": "Другая фамилия",
+        "email": "another@example.com",
+        "phone": "+79123456789",
+        "country": "Россия"
+    },
+    ...
+]
+
+### Получение информации о госте по ID
+
+**Запрос:**
+
+```http
+GET api/guests/{id}
+
+**Описание:**
+
+Возвращает информацию о госте по его уникальному идентификатору.
+
+**Пример ответа:**
+
+{
+    "id": 1,
+    "first_name": "Имя",
+    "last_name": "Фамилия",
+    "email": "example@example.com",
+    "phone": "+795262460405",
+    "country": "Россия"
+}
+
+### Создание нового гостя
+
+**Запрос:**
+
+```http
+POST /api/guests/save
+Content-Type: application/json
+
+{
+    "first_name": "Новое имя",
+    "last_name": "Новая фамилия",
+    "email": "new@example.com",
+    "phone": "+791234567890",
+    "country": "Россия"
+}
+
+**Описание:**
+
+Создает новую запись гостя с указанными данными.
+
+**Пример ответа:**
+
+{
+    "id": 3,
+    "first_name": "Новое имя",
+    "last_name": "Новая фамилия",
+    "email": "new@example.com",
+    "phone": "+791234567890",
+    "country": "Россия"
+}
+
+### Обновление информации о госте
+
+**Запрос:**
+
+```http
+POST /api/guests/update/{id}
+Content-Type: application/json
+
+{
+    "first_name": "Измененное имя",
+    "email": "updated@example.com"
+}
+
+**Описание:**
+
+Обновляет информацию о госте по его уникальному идентификатору.
+
+**Пример ответа:**
+
+{
+    "id": 1,
+    "first_name": "Измененное имя",
+    "last_name": "Фамилия",
+    "email": "updated@example.com",
+    "phone": "+795262460405",
+    "country": "Россия"
+}
+
+### Удаление гостя
+
+**Запрос:**
+
+```http
+DELETE /api/guests/delete/{id}
+
+**Описание:**
+
+Удаляет гостя по его уникальному идентификатору.
+
+**Пример ответа:**
+
+{
+    "message": "Guest was deleted successfully"
+}
