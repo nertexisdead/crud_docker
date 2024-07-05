@@ -51,6 +51,7 @@
 
 ```http
 GET /api/guests
+ ```
 
 **Описание:**
 
@@ -84,6 +85,7 @@ GET /api/guests
 
 ```http
 GET api/guests/{id}
+ ```
 
 **Описание:**
 
