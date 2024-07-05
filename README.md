@@ -86,7 +86,7 @@ GET /api/guests
 **Запрос:**
 
 ```http
-GET api/guests/{id}
+GET /api/guests/{id}
  ```
 
 **Описание:**
