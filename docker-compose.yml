@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: laravel-app
+    container_name: laravel-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - laravel
+    depends_on:
+      - db
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=apiClients
+      - DB_USERNAME=root
+      - DB_PASSWORD=secret
+
+  webserver:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - laravel
+    depends_on:
+      - app
+
+  db:
+    image: mysql:5.7
+    container_name: mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: apiClients
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - laravel
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    networks:
+      - laravel
+
+networks:
+  laravel:
+
+volumes:
+  dbdata:
